@@ -11,7 +11,6 @@ package aplicacao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import entidades.Bairro;
 import entidades.Candidato;
@@ -22,7 +21,7 @@ import servicos.ServicoResultado;
 public class Principal {
 
 	public static void main(String[] args) {
-		
+
 		String path_dadosTSE = "..\\eleicoesEstratificacaoBairros-tse\\bweb_2t_PE_301020181752.txt";
 		String path_dadosLocaisRecife = "..\\eleicoesEstratificacaoBairros-tse\\locaisVotacaoRecife.txt";
 		String cidade = "RECIFE";
@@ -31,37 +30,44 @@ public class Principal {
 
 		ServicoResultado servicoResultado = new ServicoResultado(path_dadosTSE, servicoLeitura2T2018, cidade);
 
-		ServicoLocaisVotacaoRecife locaisVotacaoRecife = new ServicoLocaisVotacaoRecife();
-		List<String> listaLocaisVotacao = locaisVotacaoRecife.leitura(path_dadosLocaisRecife);
+		ServicoLocaisVotacaoRecife servicoLocaisVotacaoRecife = new ServicoLocaisVotacaoRecife();
+		List<String> listaLocaisVotacao = servicoLocaisVotacaoRecife.leitura(path_dadosLocaisRecife);
+		List<String> listaBairrosRecife = servicoLocaisVotacaoRecife.relacaoBairros(path_dadosLocaisRecife);
+		
 		/**************/
 		/* * BAIRRO * */
 		/**************/
-		String bairroDefinodoPeloUsuario = "BOA VISTA";
+		// String bairroDefinodoPeloUsuario = "BOMBA DO HEMETÉRIO";
 
-		List<String> locaisVotacaoPorBairro = new ArrayList<>();
-		for (String local : listaLocaisVotacao) {
-			String[] vetor = local.split(",");
-			String nomeBairro = vetor[0];
-			String localVotacao = vetor[1];
-			if (nomeBairro.equals(bairroDefinodoPeloUsuario)) {
-				locaisVotacaoPorBairro.add(localVotacao);
+		for (String bairroDefinodoPeloUsuario : listaBairrosRecife) {
+
+			List<String> locaisVotacaoPorBairro = new ArrayList<>();
+			for (String local : listaLocaisVotacao) {
+				String[] vetor = local.split(",");
+				String nomeBairro = vetor[0];
+				String localVotacao = vetor[1];
+				if (nomeBairro.equals(bairroDefinodoPeloUsuario)) {
+					locaisVotacaoPorBairro.add(localVotacao);
+				}
 			}
-		}
-		Bairro bairro = new Bairro(bairroDefinodoPeloUsuario, cidade, locaisVotacaoPorBairro);
+			Bairro bairro = new Bairro(bairroDefinodoPeloUsuario, cidade, locaisVotacaoPorBairro);
 
-		servicoResultado.resultado(bairro);
+			servicoResultado.resultado(bairro);
 
-		int sum = 0;
-		for (Candidato candidato : bairro.getCandidatos().keySet()) {
-			int numeroVotosCandidato = bairro.getCandidatos().get(candidato);
-			sum += numeroVotosCandidato;
-		}
-		System.out.println(bairroDefinodoPeloUsuario + ":");
-		for (Candidato candidato : bairro.getCandidatos().keySet()) {
-			int numeroVotosCandidato = bairro.getCandidatos().get(candidato);
-			double percVotosCandidato = 100 * (double)numeroVotosCandidato / sum;
-			System.out.println(candidato.getNome() + ", " + candidato.getLegenda() + ", " + numeroVotosCandidato + ", "
-					+ String.format("%.2f", percVotosCandidato) + "%");
+			int sum = 0;
+			for (Candidato candidato : bairro.getCandidatos().keySet()) {
+				int numeroVotosCandidato = bairro.getCandidatos().get(candidato);
+				sum += numeroVotosCandidato;
+			}
+			System.out.println("-------------------------------------");
+			System.out.println(bairroDefinodoPeloUsuario + ":");
+			for (Candidato candidato : bairro.getCandidatos().keySet()) {
+				int numeroVotosCandidato = bairro.getCandidatos().get(candidato);
+				double percVotosCandidato = 100 * (double) numeroVotosCandidato / sum;
+				System.out.println(candidato.getNome() + ", " + candidato.getLegenda() + ", " + numeroVotosCandidato
+						+ ", " + String.format("%.2f", percVotosCandidato) + "%");
+			}
+			System.out.println("-------------------------------------");
 		}
 
 	}

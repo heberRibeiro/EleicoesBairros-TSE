@@ -11,14 +11,13 @@ public class ServicoResultado {
 
 	private String path;
 	private ServicoLeitura servicoLeitura;
+	private String cidade;
 
-	public ServicoResultado() {
 
-	}
-
-	public ServicoResultado(String path, ServicoLeitura servicoLeitura) {
+	public ServicoResultado(String path, ServicoLeitura servicoLeitura, String cidade) {
 		this.path = path;
 		this.servicoLeitura = servicoLeitura;
+		this.cidade = cidade;
 	}
 
 	public String getPath() {
@@ -37,11 +36,20 @@ public class ServicoResultado {
 		this.servicoLeitura = servicoLeitura;
 	}
 
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
 	/*
-	 * Este método utiliza o "ServicoLeitura" para receber um tipo "List" com os
-	 * dados relativos a cada urna separados por ponto e vírgula
-	 * (NomeDoCandidato;Legenda;
-	 * Cargo;NomeDoMunicípio;NumeroDoLocalDeVotação;QuantidadeDeVotos).
+	 * Este método recebe um tipo "Bairro" e utiliza os parâmetros: "path", "ServicoLeitura" (como interface) 
+	 * e "cidade" recebidos na instanciação desta classe. Dessa forma, este método chama o objeto instanciado 
+	 * do tipo "ServicoLeitura" e seu método "leitura" passando para ele o patho do arquivo para que seja
+	 * realizada a leitura. O retorno é um tipo "List" com os dados lidos. Esta lista é tratada por este método
+	 * e ao final atualiza o objeto do tipo "Bairro" com os dados dos candidatos com o número de votos.
 	 */
 	public void resultado(Bairro bairro) {
 

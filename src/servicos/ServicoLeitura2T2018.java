@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServicoLeituraEleicoes2018 implements ServicoLeitura {
+public class ServicoLeitura2T2018 implements ServicoLeitura {
 
 	/*
 	 * Faz a leitura do arquivo .txt e retorna um String com os seguintes dados em
@@ -20,7 +20,7 @@ public class ServicoLeituraEleicoes2018 implements ServicoLeitura {
 
 		List<String> retorno = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-			String conteudo = br.readLine();//.replaceAll("\"", "");
+			String conteudo = br.readLine();
 			while (conteudo != null) {
 				String[] vetor = conteudo.split(";");
 				String nomeCandidato = vetor[28];
@@ -32,7 +32,7 @@ public class ServicoLeituraEleicoes2018 implements ServicoLeitura {
 				
 				retorno.add(nomeCandidato+";"+legenda+";"+cargo+";"+nomeMunicipio+";"+localVotacao+";"+quantidadeVotos);
 				
-				conteudo = br.readLine();//.replaceAll("\"", "");
+				conteudo = br.readLine();
 
 			}
 

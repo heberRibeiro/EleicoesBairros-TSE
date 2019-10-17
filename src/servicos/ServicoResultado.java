@@ -13,7 +13,6 @@ public class ServicoResultado {
 	private ServicoLeitura servicoLeitura;
 	private String cidade;
 
-
 	public ServicoResultado(String path, ServicoLeitura servicoLeitura, String cidade) {
 		this.path = path;
 		this.servicoLeitura = servicoLeitura;
@@ -45,11 +44,13 @@ public class ServicoResultado {
 	}
 
 	/*
-	 * Este método recebe um tipo "Bairro" e utiliza os parâmetros: "path", "ServicoLeitura" (como interface) 
-	 * e "cidade" recebidos na instanciação desta classe. Dessa forma, este método chama o objeto instanciado 
-	 * do tipo "ServicoLeitura" e seu método "leitura" passando para ele o patho do arquivo para que seja
-	 * realizada a leitura. O retorno é um tipo "List" com os dados lidos. Esta lista é tratada por este método
-	 * e ao final atualiza o objeto do tipo "Bairro" com os dados dos candidatos com o número de votos.
+	 * Este método recebe um tipo "Bairro" e utiliza os parâmetros: "path",
+	 * "ServicoLeitura" (como interface) e "cidade" recebidos na instanciação desta
+	 * classe. Dessa forma, este método chama o objeto instanciado do tipo
+	 * "ServicoLeitura" e seu método "leitura" passando para ele o patho do arquivo
+	 * para que seja realizada a leitura. O retorno é um tipo "List" com os dados
+	 * lidos. Esta lista é tratada por este método e ao final atualiza o objeto do
+	 * tipo "Bairro" com os dados dos candidatos com o número de votos.
 	 */
 	public void resultado(Bairro bairro) {
 
@@ -65,17 +66,14 @@ public class ServicoResultado {
 			String localVotacao = conteudo[4].replaceAll("\"", "");
 			String quantidadeVotos = conteudo[5].replaceAll("\"", "");
 
-			for (String locVot : bairro.getLocaisVotacao()) {
+			if (bairro.getLocaisVotacao().contains(localVotacao) && nomeMunicipio.equals(cidade)) {
 
-				if (Integer.parseInt(locVot) == Integer.parseInt(localVotacao) && nomeMunicipio.equals("RECIFE")){
-					Candidato c = new Candidato(nomeCandidato, legenda, cargo, nomeMunicipio);
-					if (resultados.containsKey(c)) {
-						Integer acum = resultados.get(c) + Integer.parseInt(quantidadeVotos);
-						resultados.put(c, acum);
-					} else {
-						resultados.put(c, Integer.parseInt(quantidadeVotos));
-					}
-
+				Candidato c = new Candidato(nomeCandidato, legenda, cargo, nomeMunicipio);
+				if (resultados.containsKey(c)) {
+					Integer acum = resultados.get(c) + Integer.parseInt(quantidadeVotos);
+					resultados.put(c, acum);
+				} else {
+					resultados.put(c, Integer.parseInt(quantidadeVotos));
 				}
 
 			}
